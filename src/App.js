@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+// frontend/src/App.js
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
+  const [precios, setPrecios] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/precios")
+      .then((response) => {
+        setPrecios(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los datos:", error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Datos de Precios</h1>
+      {loading ? (
+        <p>Cargando...</p>
+      ) : (
+        <ul>
+          {precios.map((precio, index) => (
+            <li key={index}>{precio}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
-  const [precios, setPrecios] = useState([]);
+  const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/precios")
       .then((response) => {
-        setPrecios(response.data);
+        setProductos(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -21,13 +21,15 @@ function App() {
 
   return (
     <div>
-      <h1>Datos de Precios</h1>
+      <h1>Datos de Productos y Precios</h1>
       {loading ? (
         <p>Cargando...</p>
       ) : (
         <ul>
-          {precios.map((precio, index) => (
-            <li key={index}>{precio}</li>
+          {productos.map((producto, index) => (
+            <li key={index}>
+              {producto.nombre} - {producto.precio}
+            </li>
           ))}
         </ul>
       )}
